@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class Grid : MonoBehaviour
 {
-    // Test code
-    public Transform player;
+   
 
     
     // For creating the Grid
@@ -73,17 +72,12 @@ public class Grid : MonoBehaviour
         Gizmos.color = Color.green;
         Gizmos.DrawWireCube(transform.position, new Vector3(_gridWorldSize.x, 1f, _gridWorldSize.z));       // Drawing the Gridworld size
 
-        Node playerNode = NodeFromWorldPoint(player.position);
 
         if (_grid != null)
         {
             foreach (Node n in _grid)
             {
-                Gizmos.color = (n.isWalkable) ? Color.white : Color.red;
-                if (playerNode == n)
-                {
-                    Gizmos.color = Color.green;
-                }
+                Gizmos.color = (n.isWalkable) ? Color.white : Color.red;                
                 Gizmos.DrawCube(n.worldPosition, Vector3.one * (_nodeDiameter - .1f));
             }
         }
