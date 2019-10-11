@@ -21,7 +21,9 @@ public class Grid : MonoBehaviour
     {
         _nodeDiameter = _nodeRadius * 2;
         _gridSizeX = Mathf.RoundToInt(_gridWorldSize.x / _nodeDiameter);     // To know how many grid we can place in X
-        _gridSizeY = Mathf.RoundToInt(_gridWorldSize.y / _nodeDiameter);
+        _gridSizeY = Mathf.RoundToInt(_gridWorldSize.z / _nodeDiameter);
+
+        print(_gridSizeX + " " + _gridSizeY);
 
         CreateGrid();
     }
@@ -30,15 +32,16 @@ public class Grid : MonoBehaviour
     private void CreateGrid()
     {
         _grid = new Node[_gridSizeX, _gridSizeY];
-        Vector3 worldBottomLeft = transform.position - Vector3.right * _gridWorldSize.x / 2 - Vector3.forward * _gridWorldSize.y / 2;   // To find the starting point to  create node. here bottom left
+        Vector3 worldBottomLeft = transform.position - Vector3.right * _gridWorldSize.x / 2 - Vector3.forward * _gridWorldSize.z / 2;   // To find the starting point to  create node. here bottom left
 
         for(int x = 0; x < _gridSizeX; x++)
         {
-            for(int y = 0; y < _gridSizeY; y ++)
+            for(int y = 0; y < _gridSizeY; y++)
             {
                 Vector3 worldPoint = worldBottomLeft + Vector3.right * (x * _nodeDiameter + _nodeRadius) + Vector3.forward * (y * _nodeDiameter + _nodeRadius);
                 bool isWalkable = !(Physics.CheckSphere(worldPoint, _nodeRadius, _unWalkableMasks));
                 _grid[x, y] = new Node(isWalkable, worldPoint);
+                print(x+" "+y);
             }
         }
     }
