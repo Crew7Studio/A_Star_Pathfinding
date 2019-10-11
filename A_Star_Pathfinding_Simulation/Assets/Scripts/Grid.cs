@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Grid : MonoBehaviour
 {
-   
-
     
     // For creating the Grid
     [SerializeField] private Vector3 _gridWorldSize;
@@ -26,7 +24,6 @@ public class Grid : MonoBehaviour
         _gridSizeX = Mathf.RoundToInt(_gridWorldSize.x / _nodeDiameter);     // To know how many grid we can place in X
         _gridSizeY = Mathf.RoundToInt(_gridWorldSize.z / _nodeDiameter);
 
-
         CreateGrid();
     }
 
@@ -44,11 +41,36 @@ public class Grid : MonoBehaviour
             {
                 Vector3 worldPoint = worldBottomLeft + Vector3.right * (x * _nodeDiameter + _nodeRadius) + Vector3.forward * (y * _nodeDiameter + _nodeRadius);
                 bool isWalkable = !(Physics.CheckSphere(worldPoint, _nodeRadius, _unWalkableMasks));
-                _grid[x, y] = new Node(isWalkable, worldPoint);
+                _grid[x, y] = new Node(isWalkable, worldPoint, x, y);
             }
         }
     }
 
+
+    // For finding the neighbours of a node
+    public List<Node> GetNeighbours(Node node)
+    {
+        List<Node> neighbours = new List<Node>();
+
+        for(int x = -1; x <= 1; x++)
+        {
+            for(int y = -1; y <= 1; y++)
+            {
+                if (x == 0 && y == 0)
+                    continue;
+
+                int checkX = node.gridX + x;
+                int checkY = node.gridY + y;
+
+                if(checkX >= 0 && checkX < _gridSizeX && checkY >= 0 && checkY < _gridSizeY)
+                {
+                    neighbours.Add(_grid[checkX, checkY]);
+                }
+            }
+        }
+
+        return neighbours;
+    }
 
 
     // For identifying the position in the gird
@@ -67,6 +89,7 @@ public class Grid : MonoBehaviour
     }
 
 
+    public List<Node> path;
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
@@ -77,7 +100,14 @@ public class Grid : MonoBehaviour
         {
             foreach (Node n in _grid)
             {
-                Gizmos.color = (n.isWalkable) ? Color.white : Color.red;                
+                Gizmos.color = (n.isWalkable) ? Color.white : Color.red;
+
+                if (path != null) {
+                    if (path.Contains(n))
+                    {
+                        Gizmos.color = Color.black;
+                    }
+                }
                 Gizmos.DrawCube(n.worldPosition, Vector3.one * (_nodeDiameter - .1f));
             }
         }
