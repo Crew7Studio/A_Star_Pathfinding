@@ -50,10 +50,11 @@ public class PathFinder : MonoBehaviour
 
             foreach(Node neighbour in grid.GetNeighbours(currentNode))
             {
-                if (!neighbour.isWalkable || closedSet.Contains(currentNode))
+                if (!neighbour.isWalkable || closedSet.Contains(neighbour))
                 {
                     continue;
                 }
+
 
                 int newMovementCostToNeightbour = currentNode.gCost + GetDistance(currentNode, neighbour);
                 if(newMovementCostToNeightbour < neighbour.gCost || !openSet.Contains(neighbour)){
@@ -65,7 +66,6 @@ public class PathFinder : MonoBehaviour
                     {
                         openSet.Add(neighbour);
                     }
-                    print("a");
                 }
             }
 
@@ -94,6 +94,7 @@ public class PathFinder : MonoBehaviour
             path.Add(currentNode);
             currentNode = currentNode.parent;
         }
+        path.Add(startNode);
         path.Reverse();
 
         grid.path = path;

@@ -57,7 +57,9 @@ public class Grid : MonoBehaviour
             for(int y = -1; y <= 1; y++)
             {
                 if (x == 0 && y == 0)
+                {
                     continue;
+                }
 
                 int checkX = node.gridX + x;
                 int checkY = node.gridY + y;
@@ -68,7 +70,6 @@ public class Grid : MonoBehaviour
                 }
             }
         }
-
         return neighbours;
     }
 
