@@ -72,6 +72,7 @@ public class PathFinder : MonoBehaviour
         }
     }
 
+    // For getting distance between two nodes
     int GetDistance(Node nodeA, Node nodeB)
     {
         int distX = Mathf.Abs(nodeA.gridX - nodeB.gridX);
@@ -84,6 +85,8 @@ public class PathFinder : MonoBehaviour
         return 14 * distX + 10 * (distY - distX);
     }
 
+
+    // For getting the path from start to end node
     void RetracePath(Node startNode, Node endNode)
     {
         List<Node> path = new List<Node>();
